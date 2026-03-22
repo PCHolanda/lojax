@@ -10,7 +10,7 @@ const pageSubtitle = document.getElementById('pageSubtitle');
 
 // Check if user is already logged in
 document.addEventListener('DOMContentLoaded', async () => {
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session } } = await db.auth.getSession();
     if (session) {
         window.location.href = 'index.html';
     }
@@ -45,7 +45,7 @@ async function handleAuth(e) {
     
     if (isLoginMode) {
         // Handle Sign In
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await db.auth.signInWithPassword({
             email: email,
             password: password
         });

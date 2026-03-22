@@ -28,7 +28,7 @@ const statLowStock = document.getElementById('statLowStock');
 // Initialization
 document.addEventListener('DOMContentLoaded', async () => {
     // Verificar se o usuário está logado
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session } } = await db.auth.getSession();
     
     if (!session) {
         // Redirecionar para login
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Logout flow
 async function logout() {
-    await supabase.auth.signOut();
+    await db.auth.signOut();
     window.location.href = 'login.html';
 }
 
