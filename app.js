@@ -27,10 +27,8 @@ const statLowStock = document.getElementById('statLowStock');
 
 // Initialization
 document.addEventListener('DOMContentLoaded', async () => {
-    // Verificar se o usuário está logado
-    const { data: { session } } = await db.auth.getSession();
-    
-    if (!session) {
+    // Verificar login simples
+    if (localStorage.getItem('admin_session') !== 'true') {
         // Redirecionar para login
         window.location.href = 'login.html';
         return;
@@ -50,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Logout flow
 async function logout() {
-    await db.auth.signOut();
+    localStorage.removeItem('admin_session');
     window.location.href = 'login.html';
 }
 

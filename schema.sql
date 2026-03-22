@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS products (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
 );
 
--- Configurar o esquema do RLS (Row Level Security) para Autenticação
+-- Configurar o esquema do RLS (Row Level Security)
 ALTER TABLE products ENABLE ROW LEVEL SECURITY;
 
 -- Removemos políticas antigas para não dar conflito se você rodar por cima
@@ -20,16 +20,20 @@ DROP POLICY IF EXISTS "Permitir leitura para todos" ON products;
 DROP POLICY IF EXISTS "Permitir inserção para todos" ON products;
 DROP POLICY IF EXISTS "Permitir atualização para todos" ON products;
 DROP POLICY IF EXISTS "Permitir exclusão para todos" ON products;
+DROP POLICY IF EXISTS "Permitir leitura para logados" ON products;
+DROP POLICY IF EXISTS "Permitir inserção para logados" ON products;
+DROP POLICY IF EXISTS "Permitir atualização para logados" ON products;
+DROP POLICY IF EXISTS "Permitir exclusão para logados" ON products;
 
--- Criação das políticas estritamente baseadas no usuário LOGADO
-CREATE POLICY "Permitir leitura para logados" 
-ON products FOR SELECT USING (auth.role() = 'authenticated');
+-- Criação das políticas PERMISSIVAS para funcionar com o login local 'admin' (anon)
+CREATE POLICY "Permitir leitura para todos" 
+ON products FOR SELECT USING (true);
 
-CREATE POLICY "Permitir inserção para logados" 
-ON products FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "Permitir inserção para todos" 
+ON products FOR INSERT WITH CHECK (true);
 
-CREATE POLICY "Permitir atualização para logados" 
-ON products FOR UPDATE USING (auth.role() = 'authenticated');
+CREATE POLICY "Permitir atualização para todos" 
+ON products FOR UPDATE USING (true);
 
-CREATE POLICY "Permitir exclusão para logados" 
-ON products FOR DELETE USING (auth.role() = 'authenticated');
+CREATE POLICY "Permitir exclusão para todos" 
+ON products FOR DELETE USING (true);
