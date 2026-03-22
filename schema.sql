@@ -25,15 +25,20 @@ DROP POLICY IF EXISTS "Permitir inserção para logados" ON products;
 DROP POLICY IF EXISTS "Permitir atualização para logados" ON products;
 DROP POLICY IF EXISTS "Permitir exclusão para logados" ON products;
 
--- Criação das políticas PERMISSIVAS para funcionar com o login local 'admin' (anon)
-CREATE POLICY "Permitir leitura para todos" 
-ON products FOR SELECT USING (true);
+-- Cria as políticas SEGURAS (Apenas usuários autenticados têm acesso ao estoque)
+CREATE POLICY "Permitir leitura para logados" 
+ON products FOR SELECT 
+USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Permitir inserção para todos" 
-ON products FOR INSERT WITH CHECK (true);
+CREATE POLICY "Permitir inserção para logados" 
+ON products FOR INSERT 
+WITH CHECK (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Permitir atualização para todos" 
-ON products FOR UPDATE USING (true);
+CREATE POLICY "Permitir atualização para logados" 
+ON products FOR UPDATE 
+USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Permitir exclusão para todos" 
-ON products FOR DELETE USING (true);
+CREATE POLICY "Permitir exclusão para logados" 
+ON products FOR DELETE 
+USING (auth.uid() IS NOT NULL);
+
