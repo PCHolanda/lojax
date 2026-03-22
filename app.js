@@ -27,8 +27,9 @@ const statLowStock = document.getElementById('statLowStock');
 
 // Initialization
 document.addEventListener('DOMContentLoaded', async () => {
-    // Verificar login simples
-    if (localStorage.getItem('admin_session') !== 'true') {
+    // Verificar login real com Supabase
+    const { data: { session } } = await db.auth.getSession();
+    if (!session) {
         // Redirecionar para login
         window.location.href = 'login.html';
         return;
@@ -48,7 +49,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Logout flow
 async function logout() {
-    localStorage.removeItem('admin_session');
+    await db.auth.signOut();
     window.location.href = 'login.html';
 }
 
@@ -65,7 +66,7 @@ async function loadProducts() {
     productsTableBody.parentElement.classList.remove('hidden');
     emptyState.classList.add('hidden');
 
-    const { data, error } = await supabase
+    const { data, error } = await db
         .from('products')
         .select('*')
         .order('created_at', { ascending: false });
@@ -218,7 +219,7 @@ async function saveProduct(e) {
     
     if (editingId) {
         // Update Action
-        const { data, error } = await supabase
+        const { data, error } = await db
             .from('products')
             .update(newProductData)
             .eq('id', editingId)
@@ -239,7 +240,7 @@ async function saveProduct(e) {
         showToast('Produto atualizado com sucesso!');
     } else {
         // Insert Action
-        const { data, error } = await supabase
+        const { data, error } = await db
             .from('products')
             .insert([newProductData])
             .select();
@@ -294,7 +295,7 @@ async function deleteProduct(id) {
         // Disable temporarily 
         productsTableBody.style.opacity = '0.5';
 
-        const { error } = await supabase
+        const { error } = await db
             .from('products')
             .delete()
             .eq('id', id);
