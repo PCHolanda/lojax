@@ -9,12 +9,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Phosphor Icons para icones bonitos -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabaseClient.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body style="display: none;">
     <div class="app-container">
         <!-- Sidebar -->
         <aside class="sidebar">
@@ -34,6 +34,12 @@
                 <a href="#" class="nav-item">
                     <i class="ph ph-gear"></i>
                     <span>Configurações</span>
+                </a>
+            </nav>
+            <nav class="sidebar-nav" style="margin-top: auto;">
+                <a href="#" class="nav-item" onclick="logout()" style="color: var(--danger);">
+                    <i class="ph ph-sign-out"></i>
+                    <span>Sair (Logout)</span>
                 </a>
             </nav>
         </aside>
@@ -126,7 +132,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="productForm" onsubmit="event.preventDefault(); saveProduct();">
+                <form id="productForm" onsubmit="saveProduct(event)">
                     <input type="hidden" id="productId">
                     <div class="form-grid">
                         <div class="form-group span-2">

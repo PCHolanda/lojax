@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - EstoquePro</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .login-body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: var(--bg-main);
+        }
+        .login-card {
+            background-color: var(--bg-surface);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .login-header {
+            margin-bottom: 32px;
+        }
+        .login-header i {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        .login-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .login-header h1 span {
+            color: var(--primary);
+        }
+        .login-header p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        .login-form {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .btn-full {
+            width: 100%;
+            padding: 12px;
+            font-size: 15px;
+        }
+        #loginError {
+            color: var(--danger);
+            font-size: 13px;
+            margin-top: 12px;
+            font-weight: 500;
+            display: none;
+        }
+        .login-toggle {
+            margin-top: 24px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .login-toggle a {
+            color: var(--primary);
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .login-toggle a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="login-body">
+    <div class="login-card">
+        <div class="login-header">
+            <i class="ph-fill ph-package"></i>
+            <h1 id="pageTitle">Estoque<span>Pro</span></h1>
+            <p id="pageSubtitle">Acesse sua conta para continuar.</p>
+        </div>
+        
+        <form class="login-form" id="authForm" onsubmit="handleAuth(event)">
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" required placeholder="seu@email.com">
+            </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+            
+            <p id="loginError"></p>
+            
+            <button type="submit" class="btn btn-primary btn-full" id="submitBtn">Entrar</button>
+        </form>
+        
+        <p class="login-toggle" id="toggleText">
+            Não tem uma conta? <a href="#" onclick="toggleMode(event)">Cadastre-se</a>
+        </p>
+    </div>
+
+    <!-- Script de Inicialização e Lógica -->
+    <script src="supabaseClient.js"></script>
+    <script src="login.js"></script>
+</body>
+</html>

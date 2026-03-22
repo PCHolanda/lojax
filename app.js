@@ -1,9 +1,4 @@
-// COLOQUE SUAS CHAVES AQUI
-const SUPABASE_URL = 'https://nllpovpqfzbyhwbobwhv.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_Wi2Zg9TRG633EOSG5TrXIg_ZAuvfUVf';
-
-// Inicializar Supabase
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// Supabase is initialized via supabaseClient.js
 
 // State
 let products = [];
@@ -31,7 +26,19 @@ const statTotalValue = document.getElementById('statTotalValue');
 const statLowStock = document.getElementById('statLowStock');
 
 // Initialization
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Verificar se o usuário está logado
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session) {
+        // Redirecionar para login
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    // Mostra o body após validar sessão (evitar piscar tela)
+    document.body.style.display = 'block';
+
     loadProducts();
     
     // Search listener
@@ -40,6 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
         renderProducts(searchTerm);
     });
 });
+
+// Logout flow
+async function logout() {
+    await supabase.auth.signOut();
+    window.location.href = 'login.html';
+}
 
 // Load products from Supabase
 async function loadProducts() {
@@ -187,8 +200,10 @@ function setSavingState(isSaving) {
 }
 
 // Save (Create or Update) no Supabase
-async function saveProduct() {
-    if (SUPABASE_URL === 'SUA_SUPABASE_URL_AQUI') {
+async function saveProduct(e) {
+    if (e) e.preventDefault();
+    
+    if (typeof SUPABASE_URL !== 'undefined' && SUPABASE_URL === 'SUA_SUPABASE_URL_AQUI') {
         showToast('Configure as credenciais do Supabase!', true);
         return;
     }
